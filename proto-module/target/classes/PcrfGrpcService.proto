@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_package = "tmt.pcrf.grpc";
+option java_multiple_files = true;
+
+enum MessageType {
+  NW_REQUEST = 0;
+  NW_RESPONSE = 1;
+  APP_REQUEST = 2;
+  APP_RESPONSE = 3;
+  OTHERS       = 4;
+};
+
+message ClientMessage {
+  // Define the fields for the request JSON data.
+  MessageType messageType = 1;
+	int64 moduleId = 2;
+	int32 status = 3;
+	string uniqueRefId = 4;
+	string messageKey = 5;
+	string sessionId = 6;
+  string message = 7;
+ }
+
+ message ServerMessage {
+  // Define the fields for the request JSON data.
+  MessageType messageType = 1;
+	int64 moduleId = 2;
+	int32 status = 3;
+	string uniqueRefId = 4;
+	string messageKey = 5;
+	string sessionId = 6;
+  string message = 7;
+ }
+
+service TmtGrpcService {
+  // Define the RPC method for duplex communication between client and server
+  rpc ProcessGrpcMessage (stream ClientMessage) returns (stream ServerMessage) {};
+}
